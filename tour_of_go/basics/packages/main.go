@@ -6,8 +6,6 @@ import (
 )
 
 func main() {
-	fmt.Println("My favorite number is", rand.Intn(10))
-
-	customRand := rand.New(rand.NewSource(10))
-	fmt.Println("My hate number is ", customRand.Intn(10))
+	r := rand.New(rand.NewSource(10))
+	fmt.Println("My favorite number is", r.Intn(10))
 }

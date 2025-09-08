@@ -3,9 +3,12 @@ package main
 import "fmt"
 
 func main() {
-	var i, j int = 1, 2
-	k := 3
+	s := "string"
+	i, j := 1, 2
 	c, python, java := true, false, "no!"
 
-	fmt.Println(i, j, k, c, python, java)
+	vals := []any{s, i, j, c, python, java}
+	for _, v := range vals {
+		fmt.Printf("Value: %v, Type: %T\n", v, v)
+	}
 }
