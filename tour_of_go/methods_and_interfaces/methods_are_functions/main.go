@@ -6,8 +6,7 @@ import (
 )
 
 type Vertex struct {
-	X float64
-	Y float64
+	X, Y float64
 }
 
 func Abs(v Vertex) float64 {

@@ -12,7 +12,6 @@ func main() {
 	i = "hello"
 	describe(i)
 }
-
 func describe(i any) {
 	fmt.Printf("(%v, %T)\n", i, i)
 }

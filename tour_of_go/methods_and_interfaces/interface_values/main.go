@@ -10,11 +10,11 @@ type I interface {
 }
 
 type T struct {
-	S string
+	s string
 }
 
 func (t *T) M() {
-	fmt.Println(t.S)
+	fmt.Println(t.s)
 }
 
 type F float64
@@ -26,7 +26,7 @@ func (f F) M() {
 func main() {
 	var i I
 
-	i = &T{"Hello"}
+	i = &T{"hello"}
 	describe(i)
 	i.M()
 
@@ -36,5 +36,5 @@ func main() {
 }
 
 func describe(i I) {
-	fmt.Printf("(%v, %T)\n", i, i)
+	fmt.Printf("(%+v, %T)\n", i, i)
 }

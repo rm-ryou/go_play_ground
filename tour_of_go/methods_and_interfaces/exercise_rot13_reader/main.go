@@ -10,25 +10,23 @@ type rot13Reader struct {
 	r io.Reader
 }
 
-func (r13r rot13Reader) Read(b []byte) (int, error) {
-	n, err := r13r.r.Read(b)
+func (r13R rot13Reader) Read(b []byte) (int, error) {
+	n, err := r13R.r.Read(b)
 	if err != nil {
 		return 0, err
 	}
-
 	for i, v := range b[:n] {
 		if v >= 'A' && v <= 'Z' {
-			// v += 13
-			v = ((v-'A'+13)%26 + 'A')
-		} else if v >= 'a' && v <= 'z' {
-			// v += 13
-			v = ((v-'a'+13)%26 + 'a')
+			v = 'A' + ((v + 13 - 'A') % 26)
 		}
+		if v >= 'a' && v <= 'z' {
+			v = 'a' + ((v + 13 - 'a') % 26)
+		}
+
 		b[i] = v
 	}
-	// fmt.Println(b[:n])
-	// fmt.Printf("%q", b[:n])
-	return len(b), nil
+
+	return n, nil
 }
 
 func main() {

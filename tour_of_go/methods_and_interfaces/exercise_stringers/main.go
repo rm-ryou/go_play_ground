@@ -8,13 +8,12 @@ import (
 
 type IPAddr [4]byte
 
-func (ia IPAddr) String() string {
-	s := make([]string, len(ia))
-	for i, v := range ia {
+func (ip IPAddr) String() string {
+	s := make([]string, len(ip))
+	for i, v := range ip {
 		s[i] = strconv.Itoa(int(v))
 	}
 	return strings.Join(s, ".")
-	// return fmt.Sprintf("%d.%d.%d.%d", ia[0], ia[1], ia[2], ia[3])
 }
 
 func main() {

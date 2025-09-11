@@ -26,7 +26,4 @@ func main() {
 	ScaleFunc(p, 8)
 
 	fmt.Println(v, p)
-
-	ScaleFunc(p, 5)
-	fmt.Println(v, p)
 }

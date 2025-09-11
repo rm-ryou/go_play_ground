@@ -11,22 +11,28 @@ type Image struct {
 	X, Y int
 }
 
-func (i Image) ColorModel() color.Model {
+func (img Image) ColorModel() color.Model {
 	return color.RGBAModel
 }
 
-func (i Image) Bounds() image.Rectangle {
-	return image.Rect(0, 0, i.X, i.Y)
+func (img Image) At(x, y int) color.Color {
+	v := uint8((x + y) / 2)
+	return color.RGBA{
+		R: v,
+		G: 0,
+		B: v,
+		A: 255,
+	}
 }
 
-func (i Image) At(x, y int) color.Color {
-	return color.RGBA{uint8(x), uint8(y), 255, 255}
+func (img Image) Bounds() image.Rectangle {
+	return image.Rect(0, 0, img.X, img.Y)
 }
 
 func main() {
 	m := Image{
-		X: 100,
-		Y: 100,
+		X: 255,
+		Y: 255,
 	}
 	pic.ShowImage(m)
 }

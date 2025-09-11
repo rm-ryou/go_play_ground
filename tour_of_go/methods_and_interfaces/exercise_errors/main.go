@@ -5,20 +5,20 @@ import "fmt"
 type ErrNegativeSqrt float64
 
 func (e ErrNegativeSqrt) Error() string {
-	// val := fmt.Sprint(float64(e))
-	// return fmt.Sprintf("cannot Sqrt negative number: %v", val)
-	return fmt.Sprintf("cannot Sqrt negative number: %v", float64(e))
+	num := float64(e)
+	return fmt.Sprintf("Can't Sqrt negative number: %f", num)
 }
 
 func Sqrt(x float64) (float64, error) {
+	z := 1.0
 	if x < 0 {
-		return 0, ErrNegativeSqrt(x)
+		return x, ErrNegativeSqrt(x)
 	}
-	res := 1.0
-	for i := 0; i < 10; i++ {
-		res -= (res*res - x) / (2 * res)
+
+	for range 10 {
+		z -= (z*z - x) / (2 * z)
 	}
-	return res, nil
+	return 0, nil
 }
 
 func main() {

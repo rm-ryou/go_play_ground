@@ -6,11 +6,6 @@ import (
 )
 
 type MyFloat float64
-type DummyInt int
-
-func (di DummyInt) ToFloat() float64 {
-	return float64(di)
-}
 
 func (f MyFloat) Abs() float64 {
 	if f < 0 {
@@ -22,7 +17,4 @@ func (f MyFloat) Abs() float64 {
 func main() {
 	f := MyFloat(-math.Sqrt2)
 	fmt.Println(f.Abs())
-
-	di := DummyInt(10)
-	fmt.Printf("Value: %v Type: %T\n", di.ToFloat(), di.ToFloat())
 }

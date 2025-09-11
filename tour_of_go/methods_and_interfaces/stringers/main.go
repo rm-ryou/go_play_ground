@@ -12,7 +12,14 @@ func (p Person) String() string {
 }
 
 func main() {
-	a := Person{"Arthur Dent", 42}
-	z := Person{"Zaphod Beeblebrox", 9001}
-	fmt.Println(a, z)
+	a := Person{
+		Name: "Arthur Dent",
+		Age:  42,
+	}
+	z := Person{
+		Name: "Zaphod Beeblebrox",
+		Age:  9001,
+	}
+	fmt.Println(a)
+	fmt.Println(z)
 }
