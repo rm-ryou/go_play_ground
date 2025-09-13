@@ -19,8 +19,12 @@ func (v *Vertex) Abs() float64 {
 }
 
 func main() {
-	v := &Vertex{3, 4}
-	fmt.Printf("Before scaling: %+v, Abs: %v\n", v, v.Abs())
+	v := &Vertex{
+		X: 3,
+		Y: 4,
+	}
+	fmt.Printf("Before scalling: %+v, Abs: %v\n", v, v.Abs())
+
 	v.Scale(5)
-	fmt.Printf("After scaling: %+v, Abs: %v\n", v, v.Abs())
+	fmt.Printf("After scalling: %+v, Abs: %v\n", v, v.Abs())
 }

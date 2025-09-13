@@ -17,11 +17,17 @@ func ScaleFunc(v *Vertex, f float64) {
 }
 
 func main() {
-	v := Vertex{3, 4}
+	v := Vertex{
+		X: 3,
+		Y: 4,
+	}
 	v.Scale(2)
 	ScaleFunc(&v, 10)
 
-	p := &Vertex{4, 3}
+	p := &Vertex{
+		X: 4,
+		Y: 3,
+	}
 	p.Scale(3)
 	ScaleFunc(p, 8)
 

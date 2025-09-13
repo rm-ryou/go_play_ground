@@ -1,24 +1,19 @@
 package main
 
-import "fmt"
-
-type ErrNegativeSqrt float64
-
-func (e ErrNegativeSqrt) Error() string {
-	num := float64(e)
-	return fmt.Sprintf("Can't Sqrt negative number: %f", num)
-}
+import (
+	"fmt"
+)
 
 func Sqrt(x float64) (float64, error) {
-	z := 1.0
 	if x < 0 {
 		return x, ErrNegativeSqrt(x)
 	}
 
+	res := 1.0
 	for range 10 {
-		z -= (z*z - x) / (2 * z)
+		res -= (res*res - x) / (2 * res)
 	}
-	return 0, nil
+	return res, nil
 }
 
 func main() {

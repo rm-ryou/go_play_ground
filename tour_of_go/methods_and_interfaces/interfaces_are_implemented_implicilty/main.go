@@ -7,11 +7,11 @@ type I interface {
 }
 
 type T struct {
-	s string
+	S string
 }
 
 func (t T) M() {
-	fmt.Println(t.s)
+	fmt.Println(t.S)
 }
 
 func main() {

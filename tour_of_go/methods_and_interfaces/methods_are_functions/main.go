@@ -1,16 +1,13 @@
 package main
 
-import (
-	"fmt"
-	"math"
-)
+import "fmt"
 
 type Vertex struct {
 	X, Y float64
 }
 
 func Abs(v Vertex) float64 {
-	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+	return v.X*v.X + v.Y*v.Y
 }
 
 func main() {

@@ -1,16 +1,15 @@
 package main
 
-import (
-	"golang.org/x/tour/reader"
-)
+import "golang.org/x/tour/reader"
 
 type MyReader struct{}
 
 func (mr MyReader) Read(b []byte) (int, error) {
-	for i := range b {
+	size := len(b)
+	for i := range size {
 		b[i] = 'A'
 	}
-	return len(b), nil
+	return size, nil
 }
 
 func main() {

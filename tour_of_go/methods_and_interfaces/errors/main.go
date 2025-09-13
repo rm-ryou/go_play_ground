@@ -10,10 +10,6 @@ type MyError struct {
 	What string
 }
 
-func (me MyError) String() string {
-	return "implement stringer"
-}
-
 func (e *MyError) Error() string {
 	return fmt.Sprintf("at %v, %s", e.When, e.What)
 }
@@ -21,7 +17,7 @@ func (e *MyError) Error() string {
 func run() error {
 	return &MyError{
 		When: time.Now(),
-		What: "it din't work",
+		What: "it didn't work",
 	}
 }
 

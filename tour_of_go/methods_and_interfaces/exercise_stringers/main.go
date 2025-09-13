@@ -9,11 +9,11 @@ import (
 type IPAddr [4]byte
 
 func (ip IPAddr) String() string {
-	s := make([]string, len(ip))
-	for i, v := range ip {
-		s[i] = strconv.Itoa(int(v))
+	arry := make([]string, len(ip))
+	for i := range len(ip) {
+		arry[i] = strconv.Itoa(int(ip[i]))
 	}
-	return strings.Join(s, ".")
+	return strings.Join(arry, ".")
 }
 
 func main() {

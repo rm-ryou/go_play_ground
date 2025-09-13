@@ -4,10 +4,12 @@ import "fmt"
 
 func main() {
 	var i any = "hello"
-	fmt.Println(i)
 
 	s := i.(string)
 	fmt.Println(s)
+
+	s, ok := i.(string)
+	fmt.Println(s, ok)
 
 	f, ok := i.(float64)
 	fmt.Println(f, ok)

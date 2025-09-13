@@ -12,13 +12,14 @@ type Abser interface {
 func main() {
 	var a Abser
 	f := MyFloat(-math.Sqrt2)
-	// v := Vertex{3, 4}
-	v := &Vertex{3, 4}
+	v := Vertex{
+		X: 3, Y: 4,
+	}
 
 	a = f
-	// a = &v
+	a = &v
 
-	a = v
+	// a = v
 
 	fmt.Println(a.Abs())
 }

@@ -8,7 +8,7 @@ type Person struct {
 }
 
 func (p Person) String() string {
-	return fmt.Sprintf("%v (%v years)", p.Name, p.Age)
+	return fmt.Sprintf("%v (%v year)", p.Name, p.Age)
 }
 
 func main() {
@@ -20,6 +20,5 @@ func main() {
 		Name: "Zaphod Beeblebrox",
 		Age:  9001,
 	}
-	fmt.Println(a)
-	fmt.Println(z)
+	fmt.Println(a, z)
 }

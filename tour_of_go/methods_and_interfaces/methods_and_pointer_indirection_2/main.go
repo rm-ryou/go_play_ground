@@ -18,11 +18,17 @@ func AbsFunc(v Vertex) float64 {
 }
 
 func main() {
-	v := Vertex{3, 4}
+	v := Vertex{
+		X: 3,
+		Y: 4,
+	}
 	fmt.Println(v.Abs())
 	fmt.Println(AbsFunc(v))
 
-	p := &Vertex{4, 3}
-	fmt.Println(p.Abs())
+	p := &Vertex{
+		X: 4,
+		Y: 3,
+	}
+	fmt.Println((*p).Abs())
 	fmt.Println(AbsFunc(*p))
 }
