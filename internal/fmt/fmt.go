@@ -9,6 +9,24 @@ const (
 	STDOUT_FILENO
 )
 
+const (
+	nilString = "<nil>"
+)
+
+func createBytesFromArg(arg any) []byte {
+	if arg == nil {
+		return []byte(nilString)
+	}
+
+	var buf []byte
+	switch v := arg.(type) {
+	case string:
+		buf = append(buf, v...)
+	}
+
+	return buf
+}
+
 func Println(a ...any) (n int, err error) {
 	var buf []byte
 	for i, arg := range a {
@@ -16,10 +34,7 @@ func Println(a ...any) (n int, err error) {
 			buf = append(buf, ' ')
 		}
 
-		switch v := arg.(type) {
-		case string:
-			buf = append(buf, v...)
-		}
+		buf = append(buf, createBytesFromArg(arg)...)
 	}
 	buf = append(buf, '\n')
 

@@ -11,7 +11,7 @@ import (
 func captureStdout(t *testing.T, f func() (int, error)) (str string, n int, e error) {
 	t.Helper()
 
-	tmpFile, err := os.CreateTemp("", "stdout_test")
+	tmpFile, err := os.CreateTemp("", "test")
 	if err != nil {
 		t.Fatalf("failed to create tmpfile: %v", err)
 	}
@@ -44,7 +44,7 @@ func captureStdout(t *testing.T, f func() (int, error)) (str string, n int, e er
 }
 
 func TestPrintln(t *testing.T) {
-	stringTestCases := []struct {
+	testCases := []struct {
 		name  string
 		input []any
 	}{
@@ -53,12 +53,16 @@ func TestPrintln(t *testing.T) {
 			input: []any{"Hello, World"},
 		},
 		{
-			name:  "引数がない時は改行のみを出力する",
+			name:  "output empty line. when input is empty",
 			input: []any{},
+		},
+		{
+			name:  "output '<nil>' when input is nil",
+			input: []any{nil},
 		},
 	}
 
-	for _, tc := range stringTestCases {
+	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			actStr, actN, actErr := captureStdout(t, func() (int, error) {
 				return Println(tc.input...)
