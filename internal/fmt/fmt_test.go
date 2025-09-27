@@ -1,55 +1,46 @@
 package fmt
 
 import (
-	"bytes"
 	org_fmt "fmt"
 	"io"
 	"os"
+	"syscall"
 	"testing"
-
-	"golang.org/x/sys/unix"
 )
 
-func captureStdout(t *testing.T, f func() (int, error)) (string, int, error) {
+func captureStdout(t *testing.T, f func() (int, error)) (str string, n int, e error) {
 	t.Helper()
 
-	clonedStdoutFd, err := unix.Dup(STDOUT_FILENO)
+	tmpFile, err := os.CreateTemp("", "stdout_test")
+	if err != nil {
+		t.Fatalf("failed to create tmpfile: %v", err)
+	}
+	defer os.Remove(tmpFile.Name())
+	defer tmpFile.Close()
+
+	originalFd, err := syscall.Dup(STDOUT_FILENO)
 	if err != nil {
 		t.Fatalf("failed to dup STDOUT_FILENO: %v", err)
 	}
-	defer unix.Close(clonedStdoutFd)
-
-	backupStdout := os.Stdout
-	defer func() { os.Stdout = backupStdout }()
-
-	r, w, err := os.Pipe()
+	defer func() {
+		syscall.Dup2(originalFd, STDOUT_FILENO)
+		syscall.Close(originalFd)
+	}()
+	err = syscall.Dup2(int(tmpFile.Fd()), STDOUT_FILENO)
 	if err != nil {
-		t.Fatalf("failed to pipe: %v", err)
-	}
-	writeFd := int(w.Fd())
-
-	if err := unix.Dup2(writeFd, clonedStdoutFd); err != nil {
 		t.Fatalf("failed to dup2: %v", err)
 	}
 
-	os.Stdout = w
+	n, e = f()
 
-	outCh := make(chan string)
-	go func() {
-		var buf bytes.Buffer
+	tmpFile.Seek(0, 0)
+	output, err := io.ReadAll(tmpFile)
+	if err != nil {
+		t.Fatalf("failed to ReadAll from tmpFile: %v", err)
+	}
 
-		io.Copy(&buf, r)
-		outCh <- buf.String()
-	}()
-
-	n, err := f()
-
-	w.Close()
-	r.Close()
-
-	str := <-outCh
-
-	return str, n, err
+	str = string(output)
+	return
 }
 
 func TestPrintln(t *testing.T) {
@@ -70,8 +61,7 @@ func TestPrintln(t *testing.T) {
 	for _, tc := range stringTestCases {
 		t.Run(tc.name, func(t *testing.T) {
 			actStr, actN, actErr := captureStdout(t, func() (int, error) {
-				// return Println(tc.input...)
-				return org_fmt.Println(tc.input...)
+				return Println(tc.input...)
 			})
 
 			str, n, err := captureStdout(t, func() (int, error) {
