@@ -1,8 +1,6 @@
 package fmt
 
-import (
-	"golang.org/x/sys/unix"
-)
+import "syscall"
 
 const (
 	STDIN_FILENO int = iota
@@ -38,6 +36,6 @@ func Println(a ...any) (n int, err error) {
 	}
 	buf = append(buf, '\n')
 
-	n, err = unix.Write(STDOUT_FILENO, buf)
+	n, err = syscall.Write(STDOUT_FILENO, buf)
 	return
 }
