@@ -8,7 +8,9 @@ const (
 )
 
 const (
-	nilString = "<nil>"
+	nilString   = "<nil>"
+	trueString  = "true"
+	falseString = "false"
 )
 
 func createBytesFromArg(arg any) []byte {
@@ -18,6 +20,12 @@ func createBytesFromArg(arg any) []byte {
 
 	var buf []byte
 	switch v := arg.(type) {
+	case bool:
+		if v {
+			buf = append(buf, trueString...)
+		} else {
+			buf = append(buf, falseString...)
+		}
 	case string:
 		buf = append(buf, v...)
 	}

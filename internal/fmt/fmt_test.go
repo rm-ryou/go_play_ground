@@ -53,12 +53,28 @@ func TestPrintln(t *testing.T) {
 			input: []any{"Hello, World"},
 		},
 		{
+			name:  "引数が複数ある時はスペース区切りで出力される",
+			input: []any{"Hello", "World"},
+		},
+		{
 			name:  "output empty line. when input is empty",
 			input: []any{},
 		},
 		{
 			name:  "output '<nil>' when input is nil",
 			input: []any{nil},
+		},
+		{
+			name:  "when input is true. output 'true'",
+			input: []any{true},
+		},
+		{
+			name:  "when input is false. output 'false'",
+			input: []any{false},
+		},
+		{
+			name:  "複数の型を正常に出力できること",
+			input: []any{true, "nil", nil, false, "Hello"},
 		},
 	}
 
