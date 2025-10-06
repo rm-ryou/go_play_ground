@@ -8,41 +8,6 @@ import (
 	"testing"
 )
 
-func captureStdout(t *testing.T, f func() (int, error)) (str string, n int, e error) {
-	t.Helper()
-
-	tmpFile, err := os.CreateTemp("", "test")
-	if err != nil {
-		t.Fatalf("failed to create tmpfile: %v", err)
-	}
-	defer os.Remove(tmpFile.Name())
-	defer tmpFile.Close()
-
-	originalFd, err := syscall.Dup(STDOUT_FILENO)
-	if err != nil {
-		t.Fatalf("failed to dup STDOUT_FILENO: %v", err)
-	}
-	defer func() {
-		syscall.Dup2(originalFd, STDOUT_FILENO)
-		syscall.Close(originalFd)
-	}()
-	err = syscall.Dup2(int(tmpFile.Fd()), STDOUT_FILENO)
-	if err != nil {
-		t.Fatalf("failed to dup2: %v", err)
-	}
-
-	n, e = f()
-
-	tmpFile.Seek(0, 0)
-	output, err := io.ReadAll(tmpFile)
-	if err != nil {
-		t.Fatalf("failed to ReadAll from tmpFile: %v", err)
-	}
-
-	str = string(output)
-	return
-}
-
 func TestPrintln(t *testing.T) {
 	testCases := []struct {
 		name  string
@@ -76,6 +41,18 @@ func TestPrintln(t *testing.T) {
 			name:  "複数の型を正常に出力できること",
 			input: []any{true, "nil", nil, false, "Hello"},
 		},
+		{
+			name:  "[]byteが渡された時、文字コードを表示する",
+			input: []any{[]byte("test")},
+		},
+		{
+			name:  "byteが渡された時、文字コードを表示する",
+			input: []any{byte('a')},
+		},
+		{
+			name:  "runeが渡された時、文字コードを表示する",
+			input: []any{'h'},
+		},
 	}
 
 	for _, tc := range testCases {
@@ -101,4 +78,39 @@ func TestPrintln(t *testing.T) {
 			}
 		})
 	}
+}
+
+func captureStdout(t *testing.T, f func() (int, error)) (str string, n int, e error) {
+	t.Helper()
+
+	tmpFile, err := os.CreateTemp("", "test")
+	if err != nil {
+		t.Fatalf("failed to create tmpfile: %v", err)
+	}
+	defer os.Remove(tmpFile.Name())
+	defer tmpFile.Close()
+
+	originalFd, err := syscall.Dup(STDOUT_FILENO)
+	if err != nil {
+		t.Fatalf("failed to dup STDOUT_FILENO: %v", err)
+	}
+	defer func() {
+		syscall.Dup2(originalFd, STDOUT_FILENO)
+		syscall.Close(originalFd)
+	}()
+	err = syscall.Dup2(int(tmpFile.Fd()), STDOUT_FILENO)
+	if err != nil {
+		t.Fatalf("failed to dup2: %v", err)
+	}
+
+	n, e = f()
+
+	tmpFile.Seek(0, 0)
+	output, err := io.ReadAll(tmpFile)
+	if err != nil {
+		t.Fatalf("failed to ReadAll from tmpFile: %v", err)
+	}
+
+	str = string(output)
+	return
 }

@@ -1,6 +1,8 @@
 package fmt
 
-import "syscall"
+import (
+	"syscall"
+)
 
 const (
 	STDIN_FILENO int = iota
@@ -12,6 +14,16 @@ const (
 	trueString  = "true"
 	falseString = "false"
 )
+
+func fmtInteger(u uint64) []byte {
+	var buf []byte
+	for u > 0 {
+		rem := u / 10
+		buf = append([]byte{byte('0' + u - rem*10)}, buf...)
+		u = rem
+	}
+	return buf
+}
 
 func createBytesFromArg(arg any) []byte {
 	if arg == nil {
@@ -28,6 +40,19 @@ func createBytesFromArg(arg any) []byte {
 		}
 	case string:
 		buf = append(buf, v...)
+	case []byte:
+		buf = append(buf, '[')
+		for i, b := range v {
+			if i > 0 {
+				buf = append(buf, ' ')
+			}
+			buf = append(buf, fmtInteger(uint64(b))...)
+		}
+		buf = append(buf, ']')
+	case int32:
+		buf = append(buf, fmtInteger(uint64(v))...)
+	case uint8:
+		buf = append(buf, fmtInteger(uint64(v))...)
 	}
 
 	return buf
