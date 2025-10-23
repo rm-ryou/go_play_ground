@@ -43,10 +43,10 @@ func main() {
 		var out bytes.Buffer
 		defer func() { fmt.Println(out.String()) }()
 		defer walking.Done()
-
 		fmt.Fprintf(&out, "%v is trying to scoot:", name)
 		for range 5 {
 			if tryLeft(&out) || tryRight(&out) {
+				fmt.Fprintf(&out, "success!!")
 				return
 			}
 		}
