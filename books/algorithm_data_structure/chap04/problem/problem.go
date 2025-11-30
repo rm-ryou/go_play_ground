@@ -43,3 +43,33 @@ func Problem755(k, use, cur int, counter *int) {
 	Problem755(k, use|0b010, cur*10+5, counter)
 	Problem755(k, use|0b100, cur*10+7, counter)
 }
+
+func IsCreateValueFromAryMemo(n, w int, ary []int, memo [][]int) int {
+	if w < 0 {
+		return 0
+	}
+	if n == 0 {
+		if w == 0 {
+			return 1
+		} else {
+			return 0
+		}
+	}
+
+	if memo[n][w] != -1 {
+		return memo[n][w]
+	}
+
+	if IsCreateValueFromAryMemo(n-1, w-ary[n-1], ary, memo) == 1 {
+		memo[n][w] = 1
+		return memo[n][w]
+	}
+
+	if IsCreateValueFromAryMemo(n-1, w, ary, memo) == 1 {
+		memo[n][w] = 1
+		return memo[n][w]
+	}
+
+	memo[n][w] = 0
+	return memo[n][w]
+}

@@ -1,6 +1,9 @@
 package problem
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func Test_Tribo(t *testing.T) {
 	t.Run("トリボナッチ数列を返す", func(t *testing.T) {
@@ -58,6 +61,47 @@ func Test_Problem755(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			act := 0
 			Problem755(tc.k, 0, 0, &act)
+
+			if act != tc.want {
+				t.Errorf("want: %d, act: %d", tc.want, act)
+			}
+		})
+	}
+}
+
+func Test_IsCreateValueFromAryMemo(t *testing.T) {
+	testCases := []struct {
+		name string
+		ary  []int
+		w    int
+		want int
+	}{
+		{
+			name: "aryの要素からwを作成できる時、trueを返す",
+			ary:  []int{1, 2, 3, 5, 11},
+			w:    10,
+			want: 1,
+		},
+		{
+			name: "aryの要素からwを作成できない時、falseを返す",
+			ary:  []int{1, 5, 8, 11},
+			w:    10,
+			want: 0,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			memo := make([][]int, len(tc.ary)+1)
+			for i := range memo {
+				fmt.Println(i)
+				memo[i] = make([]int, tc.w+1)
+				for j := range memo[i] {
+					memo[i][j] = -1
+				}
+			}
+
+			act := IsCreateValueFromAryMemo(len(tc.ary), tc.w, tc.ary, memo)
 
 			if act != tc.want {
 				t.Errorf("want: %d, act: %d", tc.want, act)
