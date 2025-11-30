@@ -56,3 +56,25 @@ func Test_CalcMaxDiff(t *testing.T) {
 		}
 	})
 }
+
+func TestCalcMaxDivide(t *testing.T) {
+	t.Run("要素内の数字全てに対して、2で割れる回数を返すこと", func(t *testing.T) {
+		want := 2
+		ary := []int{4, 8, 16}
+
+		act := CalcMaxDivide(ary)
+		if act != want {
+			t.Errorf("want: %d, got: %d", want, act)
+		}
+	})
+
+	t.Run("要素内の数字全てに対して、2で割れない要素がある時0を返す", func(t *testing.T) {
+		want := 0
+		ary := []int{3, 8, 16}
+
+		act := CalcMaxDivide(ary)
+		if act != want {
+			t.Errorf("want: %d, got: %d", want, act)
+		}
+	})
+}

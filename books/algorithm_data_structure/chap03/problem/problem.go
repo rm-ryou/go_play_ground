@@ -1,6 +1,8 @@
 package problem
 
-import "math"
+import (
+	"math"
+)
 
 func CountValue(a []int, key int) int {
 	count := 0
@@ -43,4 +45,23 @@ func CalcMaxDiff(a []int) int {
 	}
 
 	return maxValue - minValue
+}
+
+func CalcMaxDivide(a []int) int {
+	res := math.MaxInt
+
+	for _, v := range a {
+		count := 0
+		for i := range v {
+			if v&(1<<i) != 0 {
+				break
+			}
+			count++
+		}
+		if res > count {
+			res = count
+		}
+	}
+
+	return res
 }
