@@ -80,3 +80,32 @@ func SumOfThreeNum(n, k int) int {
 
 	return count
 }
+
+func ManyExpre(s string) int {
+	res := 0
+	ary := make([]int, len(s))
+
+	for i, c := range s {
+		ary[i] = int(c - '0')
+	}
+
+	n := len(ary)
+	for bit := range 1 << (n - 1) {
+		sum := 0
+		for i := range n - 1 {
+			sum *= 10
+			sum += ary[i]
+
+			if bit&(1<<i) != 0 {
+				res += sum
+				sum = 0
+			}
+		}
+
+		sum *= 10
+		sum += ary[n-1]
+		res += sum
+	}
+
+	return res
+}

@@ -109,3 +109,32 @@ func Test_SumOfThreeNum(t *testing.T) {
 		})
 	}
 }
+
+func Test_ManyExpre(t *testing.T) {
+	testCases := []struct {
+		name string
+		s    string
+		want int
+	}{
+		{
+			name: "1桁以上の時、作成できる数値の和を返す",
+			s:    "125",
+			want: 176,
+		},
+		{
+			name: "1桁の時数値をそのまま返す",
+			s:    "1",
+			want: 1,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := ManyExpre(tc.s)
+
+			if act != tc.want {
+				t.Errorf("want: %d, got: %d", tc.want, act)
+			}
+		})
+	}
+}
