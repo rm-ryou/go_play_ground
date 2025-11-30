@@ -32,3 +32,15 @@ func Test_CountValue(t *testing.T) {
 		})
 	}
 }
+
+func Test_FetchSecondMinValue(t *testing.T) {
+	t.Run("ary内の2番目に小さい値を取得すること", func(t *testing.T) {
+		want := 1
+		ary := []int{1, 1, 2, 3, 4}
+
+		act := FetchSecondMinValue(ary)
+		if act != want {
+			t.Errorf("want: %d, got: %d", want, act)
+		}
+	})
+}
