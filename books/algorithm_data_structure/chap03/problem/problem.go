@@ -29,3 +29,18 @@ func FetchSecondMinValue(a []int) int {
 
 	return secondMinValue
 }
+
+func CalcMaxDiff(a []int) int {
+	maxValue := math.MinInt
+	minValue := math.MaxInt
+
+	for _, v := range a {
+		if v < minValue {
+			minValue = v
+		} else if v > maxValue {
+			maxValue = v
+		}
+	}
+
+	return maxValue - minValue
+}

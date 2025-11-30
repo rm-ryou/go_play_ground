@@ -44,3 +44,15 @@ func Test_FetchSecondMinValue(t *testing.T) {
 		}
 	})
 }
+
+func Test_CalcMaxDiff(t *testing.T) {
+	t.Run("aryの要素間の最大の差を取得すること", func(t *testing.T) {
+		want := 9
+		ary := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+		act := CalcMaxDiff(ary)
+		if act != want {
+			t.Errorf("want: %d, got: %d", want, act)
+		}
+	})
+}
