@@ -30,3 +30,16 @@ func TriboMemo(memo []int, n int) int {
 	memo[n] = TriboMemo(memo, n-1) + TriboMemo(memo, n-2) + TriboMemo(memo, n-3)
 	return memo[n]
 }
+
+func Problem755(k, use, cur int, counter *int) {
+	if cur > k {
+		return
+	}
+	if use == 0b111 {
+		*counter++
+	}
+
+	Problem755(k, use|0b001, cur*10+3, counter)
+	Problem755(k, use|0b010, cur*10+5, counter)
+	Problem755(k, use|0b100, cur*10+7, counter)
+}

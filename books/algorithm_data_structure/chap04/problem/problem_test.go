@@ -30,3 +30,38 @@ func Test_TriboMemo(t *testing.T) {
 		}
 	})
 }
+
+func Test_Problem755(t *testing.T) {
+	testCases := []struct {
+		name string
+		k    int
+		want int
+	}{
+		{
+			name: "return 4",
+			k:    575,
+			want: 4,
+		},
+		{
+			name: "return 13",
+			k:    3600,
+			want: 13,
+		},
+		{
+			name: "return 26484",
+			k:    999999999,
+			want: 26484,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := 0
+			Problem755(tc.k, 0, 0, &act)
+
+			if act != tc.want {
+				t.Errorf("want: %d, act: %d", tc.want, act)
+			}
+		})
+	}
+}
