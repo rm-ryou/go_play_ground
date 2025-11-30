@@ -1,6 +1,8 @@
 package main
 
-import "math"
+import (
+	"math"
+)
 
 func BasicLinearSearch(ary []int, key int) bool {
 	flg := false
@@ -49,4 +51,33 @@ func FindMinPairAboveNum(a, b []int, k int) int {
 		}
 	}
 	return minValue
+}
+
+func IsCreateValueFromAry(a []int, w int) bool {
+	flg := false
+	// w = 10
+	// a = [1, 2, 4, 5]
+	// ans = true
+	// len(a) = 4
+	// 0000
+	// 0001
+	// 0010
+	// 0011
+	// 0100
+	// ...
+
+	n := len(a)
+	for bit := range 1<<n - 1 {
+		sum := 0
+		for j := range n {
+			if bit&(1<<j) != 0 {
+
+				sum += a[j]
+			}
+		}
+		if sum == w {
+			flg = true
+		}
+	}
+	return flg
 }
