@@ -41,3 +41,23 @@ func FiboMemo(memo []int, n int) int {
 	memo[n] = FiboMemo(memo, n-1) + FiboMemo(memo, n-2)
 	return memo[n]
 }
+
+func IsCreateValueFromAry(n, w int, ary []int) bool {
+	if n == 0 {
+		if w == 0 {
+			return true
+		} else {
+			return false
+		}
+	}
+
+	if IsCreateValueFromAry(n-1, w-ary[n-1], ary) {
+		return true
+	}
+
+	if IsCreateValueFromAry(n-1, w, ary) {
+		return true
+	}
+
+	return false
+}
