@@ -78,3 +78,34 @@ func TestCalcMaxDivide(t *testing.T) {
 		}
 	})
 }
+
+func Test_SumOfThreeNum(t *testing.T) {
+	testCases := []struct {
+		name string
+		n    int
+		k    int
+		want int
+	}{
+		{
+			name: "k以内の3つの数の和でnを作成できる個数を返すこと",
+			n:    2,
+			k:    2,
+			want: 6,
+		},
+		{
+			name: "k以内の3つの数の和でnを作成できる個数を返すこと",
+			n:    15,
+			k:    5,
+			want: 1,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := SumOfThreeNum(tc.n, tc.k)
+			if act != tc.want {
+				t.Errorf("want: %d, got: %d", tc.want, act)
+			}
+		})
+	}
+}

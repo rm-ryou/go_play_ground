@@ -65,3 +65,18 @@ func CalcMaxDivide(a []int) int {
 
 	return res
 }
+
+func SumOfThreeNum(n, k int) int {
+	count := 0
+
+	for i := range k + 1 {
+		for j := range k + 1 {
+			diff := n - (i + j)
+			if diff >= 0 && diff <= k {
+				count++
+			}
+		}
+	}
+
+	return count
+}
