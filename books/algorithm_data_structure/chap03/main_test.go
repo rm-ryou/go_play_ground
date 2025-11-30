@@ -25,3 +25,37 @@ func Test_BasicLinearSearch(t *testing.T) {
 		}
 	})
 }
+
+func Test_FindIndex(t *testing.T) {
+	testCases := []struct {
+		name string
+		ary  []int
+		key  int
+		want int
+	}{
+		{
+
+			name: "ary内にkeyが存在する時、添字を返す",
+			ary:  []int{1, 2, 3, 4},
+			key:  2,
+			want: 1,
+		},
+		{
+
+			name: "ary内にkeyが存在する時、-1を返す",
+			ary:  []int{1, 2, 3, 4},
+			key:  5,
+			want: -1,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := FindIndex(tc.ary, tc.key)
+
+			if act != tc.want {
+				t.Errorf("want: %d, got: %d", tc.want, act)
+			}
+		})
+	}
+}
