@@ -37,3 +37,16 @@ func FindMinValue(ary []int) int {
 
 	return minValue
 }
+
+func FindMinPairAboveNum(a, b []int, k int) int {
+	minValue := math.MaxInt
+
+	for _, va := range a {
+		for _, vb := range b {
+			if va+vb > k && va+vb < minValue {
+				minValue = va + vb
+			}
+		}
+	}
+	return minValue
+}

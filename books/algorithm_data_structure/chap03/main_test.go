@@ -71,3 +71,17 @@ func Test_FindMinValue(t *testing.T) {
 		}
 	})
 }
+
+func Test_FindMinPairAboveNum(t *testing.T) {
+	t.Run("配列a, b内からk以上のうち、和が最小のものを返す", func(t *testing.T) {
+		want := 12
+		a := []int{8, 5, 4}
+		b := []int{4, 1, 9}
+		k := 10
+
+		act := FindMinPairAboveNum(a, b, k)
+		if act != want {
+			t.Errorf("want: %d, got: %d", want, act)
+		}
+	})
+}
