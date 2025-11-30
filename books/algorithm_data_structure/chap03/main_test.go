@@ -59,3 +59,15 @@ func Test_FindIndex(t *testing.T) {
 		})
 	}
 }
+
+func Test_FindMinValue(t *testing.T) {
+	t.Run("ary内の最小値を取得すること", func(t *testing.T) {
+		want := 1
+		ary := []int{1, 2, 3, 4}
+
+		act := FindMinValue(ary)
+		if act != want {
+			t.Errorf("want: %d, got: %d", want, act)
+		}
+	})
+}

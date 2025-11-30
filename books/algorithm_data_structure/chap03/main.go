@@ -1,5 +1,7 @@
 package main
 
+import "math"
+
 func BasicLinearSearch(ary []int, key int) bool {
 	flg := false
 
@@ -22,4 +24,16 @@ func FindIndex(ary []int, key int) int {
 	}
 
 	return idx
+}
+
+func FindMinValue(ary []int) int {
+	minValue := math.MaxInt
+
+	for _, v := range ary {
+		if minValue > v {
+			minValue = v
+		}
+	}
+
+	return minValue
 }
