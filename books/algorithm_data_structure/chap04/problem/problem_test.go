@@ -1,7 +1,6 @@
 package problem
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -94,7 +93,6 @@ func Test_IsCreateValueFromAryMemo(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			memo := make([][]int, len(tc.ary)+1)
 			for i := range memo {
-				fmt.Println(i)
 				memo[i] = make([]int, tc.w+1)
 				for j := range memo[i] {
 					memo[i][j] = -1
