@@ -1,6 +1,8 @@
 package main
 
-import "math"
+import (
+	"math"
+)
 
 func Flog(n int, ary []int) int {
 	dp := make([]int, n)
@@ -24,4 +26,26 @@ func Flog(n int, ary []int) int {
 	}
 
 	return dp[n-1]
+}
+
+func chMax(x, y int) int {
+	return int(math.Max(float64(x), float64(y)))
+}
+
+func Knapsack(N, W int, wAry, vAry []int) int {
+	dp := make([][]int, N+1)
+	for i := range dp {
+		dp[i] = make([]int, W+1)
+	}
+
+	for i := range N {
+		for w := range W + 1 {
+			if w-wAry[i] >= 0 {
+				dp[i+1][w] = chMax(dp[i+1][w], dp[i][w-wAry[i]]+vAry[i])
+			}
+			dp[i+1][w] = chMax(dp[i+1][w], dp[i][w])
+		}
+	}
+
+	return dp[N][W]
 }

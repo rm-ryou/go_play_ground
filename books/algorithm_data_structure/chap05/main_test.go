@@ -39,3 +39,38 @@ func Test_Flog(t *testing.T) {
 		})
 	}
 }
+
+func TestKnapsack(t *testing.T) {
+	testCases := []struct {
+		name string
+		N    int
+		W    int
+		vAry []int
+		wAry []int
+		want int
+	}{
+		{
+			name: "return 94",
+			N:    6,
+			W:    9,
+			vAry: []int{3, 2, 6, 1, 3, 85},
+			wAry: []int{2, 1, 3, 2, 1, 5},
+			want: 94,
+		},
+		{
+			name: "return 16",
+			N:    3,
+			W:    10,
+			vAry: []int{15, 10, 6},
+			wAry: []int{9, 6, 4},
+			want: 16,
+		},
+	}
+
+	for _, tc := range testCases {
+		act := Knapsack(tc.N, tc.W, tc.wAry, tc.vAry)
+		if act != tc.want {
+			t.Errorf("want: %d, act: %d", tc.want, act)
+		}
+	}
+}
