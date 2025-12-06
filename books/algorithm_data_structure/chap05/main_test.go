@@ -74,3 +74,34 @@ func TestKnapsack(t *testing.T) {
 		}
 	}
 }
+
+func Test_EditDistance(t *testing.T) {
+	testCases := []struct {
+		name string
+		a    string
+		b    string
+		want int
+	}{
+		{
+			name: "return 6",
+			a:    "logistic",
+			b:    "algorithm",
+			want: 6,
+		},
+		{
+			name: "return 4",
+			a:    "FOOD",
+			b:    "MONEY",
+			want: 4,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := EditDistance(tc.a, tc.b)
+			if act != tc.want {
+				t.Errorf("want: %d, act: %d", tc.want, act)
+			}
+		})
+	}
+}

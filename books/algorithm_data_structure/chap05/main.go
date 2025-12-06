@@ -49,3 +49,40 @@ func Knapsack(N, W int, wAry, vAry []int) int {
 
 	return dp[N][W]
 }
+
+func chMin(x, y int) int {
+	return int(math.Min(float64(x), float64(y)))
+}
+
+func EditDistance(a, b string) int {
+	dp := make([][]int, len(a)+1)
+	for i := range dp {
+		dp[i] = make([]int, len(b)+1)
+		for j := range dp[i] {
+			dp[i][j] = math.MaxInt
+		}
+	}
+
+	dp[0][0] = 0
+	for i := range len(a) + 1 {
+		for j := range len(b) + 1 {
+			if i > 0 && j > 0 {
+				if a[i-1] == b[j-1] {
+					dp[i][j] = chMin(dp[i][j], dp[i-1][j-1])
+				} else {
+					dp[i][j] = chMin(dp[i][j], dp[i-1][j-1]+1)
+				}
+			}
+
+			if i > 0 {
+				dp[i][j] = chMin(dp[i][j], dp[i-1][j]+1)
+			}
+
+			if j > 0 {
+				dp[i][j] = chMin(dp[i][j], dp[i][j-1]+1)
+			}
+		}
+	}
+
+	return dp[len(a)][len(b)]
+}
