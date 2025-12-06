@@ -1,6 +1,8 @@
 package problem
 
-import "math"
+import (
+	"math"
+)
 
 func chMax(a, b int) int {
 	return int(math.Max(float64(a), float64(b)))
@@ -47,4 +49,34 @@ func IsCreateValueFromAry(W int, ary []int) bool {
 	}
 
 	return dp[len(ary)][W]
+}
+
+func Context(ary []int) int {
+	var maxValue int
+	for i := range ary {
+		maxValue += ary[i]
+	}
+	dp := make([][]bool, len(ary)+1)
+	for i := range dp {
+		dp[i] = make([]bool, maxValue+1)
+	}
+
+	dp[0][0] = true
+	for i := range len(ary) {
+		for j := range maxValue + 1 {
+			if !dp[i][j] {
+				continue
+			}
+			dp[i+1][j] = true
+			dp[i+1][j+ary[i]] = true
+		}
+	}
+
+	res := 0
+	for i := range maxValue + 1 {
+		if dp[len(ary)][i] {
+			res++
+		}
+	}
+	return res
 }

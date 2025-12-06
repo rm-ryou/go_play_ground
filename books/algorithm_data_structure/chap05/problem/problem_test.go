@@ -75,3 +75,31 @@ func Test_IsCreateValueFromAry(t *testing.T) {
 		})
 	}
 }
+
+func Test_Contest(t *testing.T) {
+	testCases := []struct {
+		name string
+		ary  []int
+		want int
+	}{
+		{
+			name: "return 7",
+			ary:  []int{2, 3, 5},
+			want: 7,
+		},
+		{
+			name: "return 11",
+			ary:  []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			want: 11,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := Context(tc.ary)
+			if act != tc.want {
+				t.Errorf("want: %d, act: %d", tc.want, act)
+			}
+		})
+	}
+}
