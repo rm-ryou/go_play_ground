@@ -26,3 +26,25 @@ func Vacation(N int, a, b, c []int) int {
 
 	return chMax(dp[0][N], chMax(dp[1][N], dp[2][N]))
 }
+
+func IsCreateValueFromAry(W int, ary []int) bool {
+	dp := make([][]bool, len(ary)+1)
+	for i := range dp {
+		dp[i] = make([]bool, W+1)
+	}
+
+	dp[0][0] = true
+	for i := range ary {
+		for j := range W + 1 {
+			if dp[i][j] {
+				dp[i+1][j] = true
+			}
+
+			if j >= ary[i] && dp[i][j-ary[i]] {
+				dp[i+1][j] = true
+			}
+		}
+	}
+
+	return dp[len(ary)][W]
+}
