@@ -105,3 +105,18 @@ func Test_EditDistance(t *testing.T) {
 		})
 	}
 }
+
+func Test_SectionDivision(t *testing.T) {
+	want := 5
+	N := 3
+	ds := [][]int{
+		{0, 7, 1, 6},
+		{7, 0, 5, 3},
+		{1, 5, 0, 4},
+		{6, 3, 4, 0},
+	}
+	act := SectionDivision(N, ds)
+	if act != want {
+		t.Errorf("want: %d, act: %d", want, act)
+	}
+}

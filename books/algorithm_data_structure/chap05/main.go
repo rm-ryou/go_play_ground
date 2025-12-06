@@ -86,3 +86,18 @@ func EditDistance(a, b string) int {
 
 	return dp[len(a)][len(b)]
 }
+
+func SectionDivision(N int, ds [][]int) int {
+	dp := make([]int, N+1)
+	for i := range dp {
+		dp[i] = math.MaxInt
+	}
+	dp[0] = 0
+
+	for i := range N + 1 {
+		for j := range i {
+			dp[i] = chMin(dp[i], dp[j]+ds[j][i])
+		}
+	}
+	return dp[N]
+}
