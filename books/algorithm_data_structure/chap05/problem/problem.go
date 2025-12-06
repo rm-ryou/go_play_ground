@@ -8,6 +8,10 @@ func chMax(a, b int) int {
 	return int(math.Max(float64(a), float64(b)))
 }
 
+func chMin(a, b int) int {
+	return int(math.Min(float64(a), float64(b)))
+}
+
 func Vacation(N int, a, b, c []int) int {
 	const CATEGORY = 3
 	dp := make([][]int, CATEGORY)
@@ -79,4 +83,27 @@ func Context(ary []int) int {
 		}
 	}
 	return res
+}
+
+func IsCreateValueFromAryUnderK(K, W int, ary []int) bool {
+	dp := make([][]int, len(ary)+1)
+	for i := range dp {
+		dp[i] = make([]int, W+1)
+		for j := range dp[i] {
+			dp[i][j] = 1e10
+		}
+	}
+
+	dp[0][0] = 0
+	for i := range len(ary) {
+		for j := range W + 1 {
+			dp[i+1][j] = chMin(dp[i+1][j], dp[i][j])
+
+			if j >= ary[i] {
+				dp[i+1][j] = chMin(dp[i+1][j], dp[i][j-ary[i]]+1)
+			}
+		}
+	}
+
+	return dp[len(ary)][W] <= K
 }

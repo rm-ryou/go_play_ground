@@ -103,3 +103,44 @@ func Test_Contest(t *testing.T) {
 		})
 	}
 }
+
+func Test_IsCreateValueFromAryUnderK(t *testing.T) {
+	testCases := []struct {
+		name string
+		ary  []int
+		K    int
+		w    int
+		want bool
+	}{
+		{
+			name: "aryの要素からK個以下の要素を用いてwを作成できる時、trueを返す",
+			ary:  []int{1, 2, 3, 5, 11},
+			K:    3,
+			w:    10,
+			want: true,
+		},
+		{
+			name: "aryの要素からK個以下の要素を用いてwを作成できない時、falseを返す",
+			ary:  []int{1, 2, 3, 5, 11},
+			K:    2,
+			w:    10,
+			want: false,
+		},
+		{
+			name: "aryの要素からwを作成できない時、falseを返す",
+			ary:  []int{1, 5, 8, 11},
+			K:    3,
+			w:    10,
+			want: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := IsCreateValueFromAryUnderK(tc.K, tc.w, tc.ary)
+			if act != tc.want {
+				t.Errorf("want: %t, got %t", tc.want, act)
+			}
+		})
+	}
+}
