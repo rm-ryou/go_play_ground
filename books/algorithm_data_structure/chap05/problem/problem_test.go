@@ -144,3 +144,115 @@ func Test_IsCreateValueFromAryUnderK(t *testing.T) {
 		})
 	}
 }
+
+func Test_IsCreateValueFromAryUnlimited(t *testing.T) {
+	testCases := []struct {
+		name string
+		ary  []int
+		w    int
+		want bool
+	}{
+		{
+			name: "aryの要素から重複ありでwを作成できる時、trueを返す",
+			ary:  []int{2, 5, 11},
+			w:    8,
+			want: true,
+		},
+		{
+			name: "aryの要素から重複ありでwを作成できない時、falseを返す",
+			ary:  []int{5, 8, 11},
+			w:    9,
+			want: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := IsCreateValueFromAryUnlimited(tc.w, tc.ary)
+			if act != tc.want {
+				t.Errorf("want: %t, got %t", tc.want, act)
+			}
+		})
+	}
+}
+
+func Test_IsCreateValueFromAryLimited(t *testing.T) {
+	testCases := []struct {
+		name string
+		ary  []int
+		lim  []int
+		w    int
+		want bool
+	}{
+		{
+			name: "aryの要素からlim以下までの重複ありでwを作成できる時、trueを返す",
+			ary:  []int{2, 5, 11},
+			lim:  []int{3, 2, 1},
+			w:    8,
+			want: true,
+		},
+		{
+			name: "aryの要素からlim以下までの重複ありでwを作成できない時、falseを返す",
+			ary:  []int{2, 5, 11},
+			lim:  []int{1, 1, 1},
+			w:    8,
+			want: false,
+		},
+		{
+			name: "aryの要素からlimi以下までの重複ありでwを作成できない時、falseを返す",
+			ary:  []int{5, 8, 11},
+			lim:  []int{1, 2, 3},
+			w:    9,
+			want: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := IsCreateValueFromAryLimited(tc.w, tc.ary, tc.lim)
+			if act != tc.want {
+				t.Errorf("want: %t, got %t", tc.want, act)
+			}
+		})
+	}
+}
+
+func Test_LCS(t *testing.T) {
+	tests := []struct {
+		name string
+		s, t string
+		want string
+		// want int
+	}{
+		{
+			name: "return lcs",
+			s:    "axyb",
+			t:    "abyxb",
+			want: "ayb",
+			// want: 3,
+		},
+		{
+			name: "return lcs",
+			s:    "aa",
+			t:    "xayaz",
+			want: "aa",
+			// want: 2,
+		},
+		{
+			name: "return lcs",
+			s:    "a",
+			t:    "z",
+			want: "",
+			// want: 0,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			act := LCS(tt.s, tt.t)
+			if act != tt.want {
+				t.Errorf("want: %v, act: %v", tt.want, act)
+			}
+		})
+	}
+}

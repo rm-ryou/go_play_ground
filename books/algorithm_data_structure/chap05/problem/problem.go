@@ -107,3 +107,96 @@ func IsCreateValueFromAryUnderK(K, W int, ary []int) bool {
 
 	return dp[len(ary)][W] <= K
 }
+
+func IsCreateValueFromAryUnlimited(W int, ary []int) bool {
+	dp := make([][]bool, len(ary)+1)
+	for i := range dp {
+		dp[i] = make([]bool, W+1)
+	}
+
+	dp[0][0] = true
+	for i := range ary {
+		for j := range W + 1 {
+			if dp[i][j] {
+				dp[i+1][j] = true
+			}
+
+			if j >= ary[i] && dp[i+1][j-ary[i]] {
+				dp[i+1][j] = true
+			}
+		}
+	}
+
+	return dp[len(ary)][W]
+}
+
+func IsCreateValueFromAryLimited(W int, ary, lim []int) bool {
+	dp := make([][]int, len(ary)+1)
+	for i := range dp {
+		dp[i] = make([]int, W+1)
+		for j := range dp[i] {
+			dp[i][j] = math.MaxInt
+		}
+	}
+
+	dp[0][0] = 0
+	for i := range ary {
+		for j := range W + 1 {
+			dp[i+1][j] = chMin(dp[i+1][j], dp[i][j])
+
+			if j >= ary[i] && dp[i+1][j-ary[i]] <= lim[i] {
+				dp[i+1][j] = chMin(dp[i+1][j], dp[i+1][j-ary[i]]+1)
+			}
+		}
+	}
+
+	return dp[len(ary)][W] < math.MaxInt
+}
+
+func chMaxStr(s, t string) string {
+	if len(s) > len(t) {
+		return s
+	} else {
+		return t
+	}
+}
+
+// func LCS(s, t string) int {
+func LCS(s, t string) string {
+	dp := make([][]int, len(s)+1)
+	for i := range dp {
+		dp[i] = make([]int, len(t)+1)
+	}
+
+	ans := make([][]string, len(s)+1)
+	for i := range ans {
+		ans[i] = make([]string, len(t)+1)
+	}
+
+	for i := range len(s) + 1 {
+		for j := range len(t) + 1 {
+			if i > 0 && j > 0 {
+				if s[i-1] == t[j-1] {
+					dp[i][j] = chMax(dp[i][j], dp[i-1][j-1]+1)
+					ans[i][j] = ans[i-1][j-1] + string(t[j-1])
+				} else {
+					dp[i][j] = chMax(dp[i][j], dp[i-1][j-1])
+					ans[i][j] = chMaxStr(ans[i][j], ans[i-1][j-1])
+				}
+			}
+
+			if i > 0 {
+				dp[i][j] = chMax(dp[i][j], dp[i-1][j])
+				ans[i][j] = chMaxStr(ans[i][j], ans[i-1][j])
+			}
+
+			if j > 0 {
+				dp[i][j] = chMax(dp[i][j], dp[i][j-1])
+				ans[i][j] = chMaxStr(ans[i][j], ans[i][j-1])
+			}
+		}
+	}
+
+	return ans[len(s)][len(t)]
+	// return dp[len(s)][len(t)]
+}
