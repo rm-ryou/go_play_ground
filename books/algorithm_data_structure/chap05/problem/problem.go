@@ -200,3 +200,39 @@ func LCS(s, t string) string {
 	return ans[len(s)][len(t)]
 	// return dp[len(s)][len(t)]
 }
+
+func SectionDivision(N, M int, ary []int) float64 {
+	dp := make([][]float64, N+1)
+	for i := range dp {
+		dp[i] = make([]float64, M+1)
+	}
+
+	aves := make([][]float64, N+1)
+	for i := range aves {
+		aves[i] = make([]float64, N+1)
+	}
+
+	for i := 1; i <= N; i++ {
+		for j := 0; j < i; j++ {
+			var sum float64
+			for k := j; k < i; k++ {
+				sum += float64(ary[k])
+			}
+			aves[j][i] = sum / float64(i-j)
+		}
+	}
+
+	for i := range N + 1 {
+		for j := range i {
+			for k := 1; k <= M; k++ {
+				dp[i][k] = math.Max(dp[i][k], dp[j][k-1]+aves[j][i])
+			}
+		}
+	}
+
+	var res float64
+	for i := range M + 1 {
+		res = math.Max(res, dp[N][i])
+	}
+	return res
+}

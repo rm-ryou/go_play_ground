@@ -256,3 +256,36 @@ func Test_LCS(t *testing.T) {
 		})
 	}
 }
+
+func Test_SectionDivision(t *testing.T) {
+	tests := []struct {
+		name string
+		N, M int
+		ary  []int
+		want float64
+	}{
+		{
+			name: "return 20",
+			N:    5,
+			M:    3,
+			ary:  []int{9, 1, 2, 3, 9},
+			want: 20,
+		},
+		{
+			name: "return 8.5",
+			N:    4,
+			M:    1,
+			ary:  []int{14, 4, 9, 7},
+			want: 8.5,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			act := SectionDivision(tt.N, tt.M, tt.ary)
+			if act != tt.want {
+				t.Errorf("want: %v, act: %v", tt.want, act)
+			}
+		})
+	}
+}
