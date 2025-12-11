@@ -120,3 +120,46 @@ func Test_Vacation(t *testing.T) {
 		})
 	}
 }
+
+func Test_Knapsack1(t *testing.T) {
+	tests := []struct {
+		name string
+		N, W int
+		w, v []int
+		want int
+	}{
+		{
+			name: "return 90",
+			N:    3,
+			W:    8,
+			w:    []int{3, 4, 5},
+			v:    []int{30, 50, 60},
+			want: 90,
+		},
+		{
+			name: "return 5000000000",
+			N:    5,
+			W:    5,
+			w:    []int{1, 1, 1, 1, 1},
+			v:    []int{1000000000, 1000000000, 1000000000, 1000000000, 1000000000},
+			want: 5000000000,
+		},
+		{
+			name: "return 17",
+			N:    6,
+			W:    15,
+			w:    []int{6, 5, 6, 6, 3, 7},
+			v:    []int{5, 6, 4, 6, 5, 2},
+			want: 17,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			act := Knapsack1(tt.N, tt.W, tt.w, tt.v)
+			if act != tt.want {
+				t.Errorf("want: %d, act: %d", tt.want, act)
+			}
+		})
+	}
+}

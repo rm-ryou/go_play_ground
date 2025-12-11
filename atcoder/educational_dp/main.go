@@ -77,3 +77,21 @@ func Vacation(N int, a, b, c []int) int {
 
 	return chMax(dp[N][0], chMax(dp[N][1], dp[N][2]))
 }
+
+func Knapsack1(N, W int, w, v []int) int {
+	dp := make([][]int, N+1)
+	for i := range dp {
+		dp[i] = make([]int, W+1)
+	}
+
+	for i := range N {
+		for j := range W + 1 {
+			if j >= w[i] {
+				dp[i+1][j] = chMax(dp[i+1][j], dp[i][j-w[i]]+v[i])
+			}
+			dp[i+1][j] = chMax(dp[i+1][j], dp[i][j])
+		}
+	}
+
+	return dp[N][W]
+}
