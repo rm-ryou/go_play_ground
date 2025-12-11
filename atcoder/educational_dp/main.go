@@ -13,7 +13,7 @@ func abs(x int) int {
 }
 
 func Flog1(N int, height []int) int {
-	dp := make([]int, N+1)
+	dp := make([]int, N)
 	for i := range dp {
 		dp[i] = math.MaxInt
 	}
@@ -28,6 +28,26 @@ func Flog1(N int, height []int) int {
 				dp[i-1]+abs(height[i]-height[i-1]),
 				dp[i-2]+abs(height[i]-height[i-2]),
 			)
+		}
+	}
+
+	return dp[N-1]
+}
+
+func Flog2(N, K int, height []int) int {
+	dp := make([]int, N)
+	for i := range dp {
+		dp[i] = math.MaxInt
+	}
+
+	dp[0] = 0
+	for i := 1; i < N; i++ {
+		for j := 1; j <= K; j++ {
+			if i == 1 {
+				dp[i] = abs(height[i] - height[i-1])
+			} else if i >= j {
+				dp[i] = chMin(dp[i], dp[i-j]+abs(height[i]-height[i-j]))
+			}
 		}
 	}
 
