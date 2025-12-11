@@ -163,3 +163,45 @@ func Test_Knapsack1(t *testing.T) {
 		})
 	}
 }
+
+func Test_LCS(t *testing.T) {
+	tests := []struct {
+		name string
+		s, t string
+		want string
+	}{
+		{
+			name: "return axb or ayb",
+			s:    "axyb",
+			t:    "abyxb",
+			want: "ayb",
+		},
+		{
+			name: "return aa",
+			s:    "aa",
+			t:    "xayaz",
+			want: "aa",
+		},
+		{
+			name: "return empty",
+			s:    "a",
+			t:    "z",
+			want: "",
+		},
+		{
+			name: "return 'aaadara'",
+			s:    "abracadabra",
+			t:    "avadakedavra",
+			want: "aaadara",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			act := LCS(tt.s, tt.t)
+			if act != tt.want {
+				t.Errorf("want: %s, act: %s", tt.want, act)
+			}
+		})
+	}
+}

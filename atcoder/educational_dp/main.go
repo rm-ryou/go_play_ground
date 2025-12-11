@@ -95,3 +95,40 @@ func Knapsack1(N, W int, w, v []int) int {
 
 	return dp[N][W]
 }
+
+func chMaxStr(s, t string) string {
+	if len(s) > len(t) {
+		return s
+	} else {
+		return t
+	}
+}
+
+func LCS(s, t string) string {
+	dp := make([][]string, len(s)+1)
+	for i := range dp {
+		dp[i] = make([]string, len(t)+1)
+	}
+
+	for i := range len(s) + 1 {
+		for j := range len(t) + 1 {
+			if i > 0 && j > 0 {
+				if s[i-1] == t[j-1] {
+					dp[i][j] = dp[i-1][j-1] + string(t[j-1])
+				} else {
+					dp[i][j] = chMaxStr(dp[i][j], dp[i-1][j-1])
+				}
+			}
+
+			if i > 0 {
+				dp[i][j] = chMaxStr(dp[i][j], dp[i-1][j])
+			}
+
+			if j > 0 {
+				dp[i][j] = chMaxStr(dp[i][j], dp[i][j-1])
+			}
+		}
+	}
+
+	return string(dp[len(s)][len(t)])
+}
