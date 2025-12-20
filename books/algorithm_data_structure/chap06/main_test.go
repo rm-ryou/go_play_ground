@@ -77,3 +77,37 @@ func Test_MinSumOverK(t *testing.T) {
 		t.Errorf("want: %d, act: %d", want, act)
 	}
 }
+
+func Test_Shooting(t *testing.T) {
+	testCases := []struct {
+		name   string
+		n      int
+		height []int
+		speed  []int
+		want   int
+	}{
+		{
+			name:   "return 23",
+			n:      4,
+			height: []int{5, 12, 14, 21},
+			speed:  []int{6, 4, 7, 2},
+			want:   23,
+		},
+		{
+			name:   "return 105",
+			n:      6,
+			height: []int{100, 100, 100, 100, 100, 1},
+			speed:  []int{1, 1, 1, 1, 1, 30},
+			want:   105,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := Shooting(tc.n, tc.height, tc.speed)
+			if act != tc.want {
+				t.Errorf("want: %d, act: %d", tc.want, act)
+			}
+		})
+	}
+}

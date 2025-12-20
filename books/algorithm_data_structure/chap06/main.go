@@ -71,3 +71,36 @@ func MinSumOverK(a, b []int, k int) int {
 
 	return res
 }
+
+func Shooting(n int, height, speed []int) int {
+	left, right := 0, math.MaxInt
+
+	for right-left > 1 {
+		canShooting := true
+		mid := (left + right) / 2
+
+		timeLimit := make([]int, n)
+		for i := range timeLimit {
+			if mid < height[i] {
+				canShooting = false
+			} else {
+				timeLimit[i] = (mid - height[i]) / speed[i]
+			}
+		}
+
+		sort.Ints(timeLimit)
+		for i, v := range timeLimit {
+			if v < i {
+				canShooting = false
+			}
+		}
+
+		if canShooting {
+			right = mid
+		} else {
+			left = mid
+		}
+	}
+
+	return right
+}
