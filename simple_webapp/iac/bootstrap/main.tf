@@ -1,7 +1,5 @@
-data "aws_caller_identity" "current" {}
-
 locals {
-  tfstate_bucket_name = "tfstate-${var.project}-${var.env}-${data.aws_caller_identity.current.account_id}-${var.aws_region}"
+  tfstate_bucket_name = "tfstate-${var.project}-${var.env}-${var.aws_region}"
 }
 
 resource "aws_s3_bucket" "terraform_state" {
@@ -12,7 +10,7 @@ resource "aws_s3_bucket" "terraform_state" {
   }
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
