@@ -49,3 +49,22 @@ func Schedule(N int, starts, ends []int) int {
 	}
 	return res
 }
+
+func MultipleArray(n int, buttons, nums []int) int {
+	res := 0
+	sum := 0
+	for i := n - 1; i >= 0; i-- {
+		buttons[i] += sum
+		d := buttons[i] % nums[i]
+
+		currentCount := 0
+		if d != 0 {
+			currentCount = nums[i] - d
+		}
+
+		res += currentCount
+		sum = res
+	}
+
+	return res
+}
