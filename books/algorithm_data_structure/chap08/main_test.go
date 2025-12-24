@@ -10,7 +10,9 @@ func Test_Node(t *testing.T) {
 			t.Errorf("want: %v, act: %v", nil, node.Next)
 		}
 	})
+}
 
+func Test_Insert(t *testing.T) {
 	t.Run("prevの直後にvalが挿入されること", func(t *testing.T) {
 		node := NewNode("first")
 		nextNode := NewNode("second")
@@ -22,7 +24,26 @@ func Test_Node(t *testing.T) {
 		}
 
 		if node.Next.Name != nextNode.Name {
-			t.Errorf("want: %s, act: %s", nextNode.Name, node.Next.Next)
+			t.Errorf("want: %s, act: %s", nextNode.Name, node.Next.Name)
 		}
 	})
+}
+
+func Test_Delete(t *testing.T) {
+	firstNode := NewNode("first")
+	secondNode := NewNode("second")
+	thirdNode := NewNode("third")
+
+	firstNode.Insert(secondNode)
+	secondNode.Insert(thirdNode)
+
+	if firstNode.Next.Next.Name != thirdNode.Name {
+		t.Fatalf("failed to setup. want: %s, act: %s", thirdNode.Name, firstNode.Next.Next.Name)
+	}
+
+	secondNode.Delete()
+
+	if firstNode.Next.Name != thirdNode.Name {
+		t.Errorf("want: %s, act: %s", thirdNode.Name, firstNode.Next.Name)
+	}
 }
