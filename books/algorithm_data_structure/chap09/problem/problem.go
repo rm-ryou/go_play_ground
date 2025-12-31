@@ -2,6 +2,7 @@ package problem
 
 import (
 	"errors"
+	"fmt"
 )
 
 var ErrDataIsEmpty = errors.New("data is empty")
@@ -75,6 +76,34 @@ func RPN(expre string) (int, error) {
 	res, err := s.Pop()
 	if err != nil {
 		return 0, err
+	}
+	return res, nil
+}
+
+func CheckBrackets(expre string) (bool, error) {
+	s := NewStack()
+
+	for i, v := range expre {
+		switch v {
+		case '(':
+			s.Push(i)
+		case ')':
+			idx, err := s.Pop()
+			if err != nil {
+				return false, err
+			}
+
+			fmt.Printf("%d and %d match\n", idx, i)
+		default:
+			continue
+		}
+	}
+
+	var res bool
+	if s.tail == 0 {
+		res = true
+	} else {
+		res = false
 	}
 	return res, nil
 }
