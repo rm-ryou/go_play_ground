@@ -47,5 +47,5 @@ func (uf *UnionFind) Unite(x, y int) bool {
 }
 
 func (uf *UnionFind) Size(x int) int {
-	return uf.size[uf.Root(x)]
+	return uf.Parent[uf.Root(x)]
 }
