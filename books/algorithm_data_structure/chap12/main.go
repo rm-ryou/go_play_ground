@@ -123,3 +123,24 @@ func HeapSort(data []int) []int {
 
 	return clone
 }
+
+func BucketSort(data []int) []int {
+	MaxElemNumber := 1000
+	num := make([]int, MaxElemNumber)
+	for i := range len(data) {
+		num[data[i]]++
+	}
+
+	sum := make([]int, MaxElemNumber)
+	for i := 1; i < MaxElemNumber; i++ {
+		sum[i] = sum[i-1] + num[i]
+	}
+
+	res := make([]int, len(data))
+	for i := len(data) - 1; i >= 0; i-- {
+		idx := sum[data[i]] - 1
+		res[idx] = data[i]
+	}
+
+	return res
+}

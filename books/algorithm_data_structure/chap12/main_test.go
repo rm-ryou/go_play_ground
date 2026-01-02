@@ -133,3 +133,32 @@ func Test_HeapSort(t *testing.T) {
 		})
 	}
 }
+
+func Test_BucketSort(t *testing.T) {
+	type testCase struct {
+		name string
+		data []int
+		want []int
+	}
+
+	testCases := []testCase{
+		{
+			name: "昇順にソートすること",
+			data: []int{5, 2, 4, 3, 1},
+			want: []int{1, 2, 3, 4, 5},
+		},
+		{
+			name: "同一値が含まれている時、ソートはできないこと",
+			data: []int{1, 1, 2, 1, 1},
+			want: []int{0, 0, 0, 1, 2},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := BucketSort(tc.data)
+
+			assertSlice(t, tc.want, act)
+		})
+	}
+}
