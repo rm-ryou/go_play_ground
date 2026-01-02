@@ -88,3 +88,38 @@ func QuickSort(data []int) []int {
 
 	return clone
 }
+
+// iを根とする部分木
+func Heapify(data []int, i, n int) {
+	child := i*2 + 1
+	if child >= n {
+		return
+	}
+
+	if child+1 < n && data[child+1] > data[child] {
+		child++
+	}
+
+	if data[child] <= data[i] {
+		return
+	}
+
+	data[i], data[child] = data[child], data[i]
+
+	Heapify(data, child, n)
+}
+
+func HeapSort(data []int) []int {
+	clone := make([]int, len(data))
+	copy(clone, data)
+
+	for i := len(clone)/2 - 1; i >= 0; i-- {
+		Heapify(clone, i, len(clone))
+	}
+	for i := len(clone) - 1; i > 0; i-- {
+		clone[0], clone[i] = clone[i], clone[0]
+		Heapify(clone, 0, i)
+	}
+
+	return clone
+}
