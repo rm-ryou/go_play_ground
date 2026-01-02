@@ -57,3 +57,34 @@ func MergeSort(data []int) []int {
 
 	return clone
 }
+
+func doQuickSort(data []int, left, right int) {
+	if right-left <= 1 {
+		return
+	}
+
+	midIdx := (left + right) / 2
+	mid := data[midIdx]
+	data[midIdx], data[right-1] = data[right-1], data[midIdx]
+
+	base := left
+	for i := left; i < right-1; i++ {
+		if data[i] < mid {
+			data[base], data[i] = data[i], data[base]
+			base++
+		}
+	}
+	data[base], data[right-1] = data[right-1], data[base]
+
+	doQuickSort(data, left, base)
+	doQuickSort(data, base+1, right)
+}
+
+func QuickSort(data []int) []int {
+	clone := make([]int, len(data))
+	copy(clone, data)
+
+	doQuickSort(clone, 0, len(clone))
+
+	return clone
+}
