@@ -43,3 +43,41 @@ func Test_IsSTPathExists(t *testing.T) {
 		})
 	}
 }
+
+func Test_IsBipartiteGraph(t *testing.T) {
+	type testCase struct {
+		name string
+		n, m int
+		a, b []int
+		want bool
+	}
+
+	testCases := []testCase{
+		{
+			name: "2部グラフ時、trueを返す",
+			n:    5,
+			m:    5,
+			a:    []int{0, 0, 1, 1, 3},
+			b:    []int{1, 3, 2, 4, 4},
+			want: true,
+		},
+		{
+			name: "2部グラフでない時、trueを返す",
+			n:    5,
+			m:    6,
+			a:    []int{0, 0, 0, 1, 1, 3},
+			b:    []int{1, 3, 2, 2, 4, 4},
+			want: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := IsBipartiteGraph(tc.n, tc.m, tc.a, tc.b)
+
+			if act != tc.want {
+				t.Errorf("want: %t, act: %t", tc.want, act)
+			}
+		})
+	}
+}
