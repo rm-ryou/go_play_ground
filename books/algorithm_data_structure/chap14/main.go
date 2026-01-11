@@ -1,12 +1,13 @@
 package main
 
+const INF int = 1e+06
+
 type Edge struct {
 	to int
 	w  int
 }
 
 func BellmanFord(N, M, s, v int, a, b, w []int) int {
-	const INF int = 1e+06
 	graph := make([][]Edge, M)
 	for i := range graph {
 		graph[a[i]] = append(graph[a[i]], Edge{to: b[i], w: w[i]})
@@ -51,4 +52,45 @@ func BellmanFord(N, M, s, v int, a, b, w []int) int {
 	}
 
 	return dist[v]
+}
+
+func Dijkstr(N, M, s, t int, a, b, w []int) int {
+	graph := make([][]Edge, M)
+	for i := range graph {
+		graph[a[i]] = append(graph[a[i]], Edge{to: b[i], w: w[i]})
+	}
+
+	used := make([]bool, N)
+	dist := make([]int, N)
+	for i := range dist {
+		dist[i] = INF
+	}
+	dist[s] = 0
+
+	for range N {
+		minDist := INF
+		minVal := -1
+
+		for v := range N {
+			if !used[v] && dist[v] < minDist {
+				minDist = dist[v]
+				minVal = v
+			}
+		}
+		if minVal == -1 {
+			break
+		}
+
+		for _, e := range graph[minVal] {
+			a := dist[e.to]
+			b := dist[minVal] + e.w
+
+			if a > b {
+				dist[e.to] = b
+			}
+		}
+		used[minVal] = true
+	}
+
+	return dist[t]
 }
