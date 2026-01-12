@@ -38,3 +38,58 @@ func LongestPath(N, M int, x, y []int) int {
 
 	return res
 }
+
+type Edge struct {
+	to     int
+	weight int
+}
+
+const INF int = 1e+010
+
+func ScoreAttack(N, M int, x, y, w []int) int {
+	graph := make([][]Edge, N)
+	for i := range M {
+		edge := Edge{
+			to:     y[i] - 1,
+			weight: -w[i],
+		}
+		graph[x[i]-1] = append(graph[x[i]-1], edge)
+	}
+
+	dist := make([]int, N)
+	for i := range dist {
+		dist[i] = INF
+	}
+	dist[0] = 0
+	existNegativeCycle := make([]bool, N)
+
+	for range N - 1 {
+		for v := range N {
+			for _, w := range graph[v] {
+				val := dist[v] + w.weight
+				if dist[w.to] > val {
+					dist[w.to] = val
+				}
+			}
+		}
+	}
+
+	for range N {
+		for v := range N {
+			for _, e := range graph[v] {
+				val := dist[v] + e.weight
+				if dist[e.to] > val {
+					existNegativeCycle[e.to] = true
+				}
+				if existNegativeCycle[v] {
+					existNegativeCycle[e.to] = true
+				}
+			}
+		}
+	}
+
+	if !existNegativeCycle[N-1] {
+		return -dist[N-1]
+	}
+	return -1
+}
