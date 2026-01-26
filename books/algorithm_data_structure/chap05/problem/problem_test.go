@@ -73,3 +73,73 @@ func Test_SumOfPart(t *testing.T) {
 		})
 	}
 }
+
+func Test_ProblemStatement(t *testing.T) {
+	type testCase struct {
+		name string
+		n    int
+		p    []int
+		want int
+	}
+
+	testCases := []testCase{
+		{
+			name: "return 7",
+			n:    3,
+			p:    []int{2, 3, 5},
+			want: 7,
+		},
+		{
+			name: "return 11",
+			n:    10,
+			p:    []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			want: 11,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := ProblemStatement(tc.n, tc.p)
+			if act != tc.want {
+				t.Errorf("want: %d, act: %d", tc.want, act)
+			}
+		})
+	}
+}
+
+func Test_SumOfPartUnderK(t *testing.T) {
+	type testCase struct {
+		name    string
+		n, w, k int
+		a       []int
+		want    bool
+	}
+
+	testCases := []testCase{
+		{
+			name: "aから、k個以内の要素をたし、wを作ることができる時、trueを返すこと",
+			n:    5,
+			w:    10,
+			k:    3,
+			a:    []int{1, 2, 3, 5, 11},
+			want: true,
+		},
+		{
+			name: "aから、k個以内の要素をたし、wを作ることができない時、falseを返すこと",
+			n:    5,
+			w:    10,
+			k:    1,
+			a:    []int{2, 6, 3, 5, 11},
+			want: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := SumOfPartUnderK(tc.n, tc.w, tc.k, tc.a)
+			if act != tc.want {
+				t.Errorf("want: %t, act: %t", tc.want, act)
+			}
+		})
+	}
+}
