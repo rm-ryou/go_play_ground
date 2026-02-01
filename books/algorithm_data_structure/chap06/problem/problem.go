@@ -1,7 +1,6 @@
 package problem
 
 import (
-	"fmt"
 	"slices"
 	"sort"
 )
@@ -36,10 +35,6 @@ func Sunke(n int, a, b, c []int) int {
 	sort.Ints(b)
 	sort.Ints(c)
 
-	fmt.Println(a)
-	fmt.Println(b)
-	fmt.Println(c)
-
 	var res int
 	for _, v := range b {
 		// b未満のaの個数
@@ -54,4 +49,56 @@ func Sunke(n int, a, b, c []int) int {
 		res += underVIdx * upperVIdx
 	}
 	return res
+}
+
+func Darts(n, m int, a []int) int {
+	a = append(a, 0)
+	sumOfA := make([]int, 0)
+	for i := range a {
+		for j := range a {
+			sumOfA = append(sumOfA, a[i]+a[j])
+		}
+	}
+
+	sort.Ints(sumOfA)
+	var res int
+	for i := range sumOfA {
+		idx := sort.Search(len(sumOfA), func(x int) bool {
+			return sumOfA[x] >= m-sumOfA[i]
+		})
+		if idx == len(sumOfA) || idx == 0 {
+			continue
+		}
+
+		if res <= sumOfA[i]+sumOfA[idx-1] {
+			res = sumOfA[i] + sumOfA[idx-1]
+		}
+	}
+
+	return res
+}
+
+func AggressiveCows(n, m int, a []int) int {
+	sort.Ints(a)
+
+	left, right := 0, int(1<<10)
+	for right-left > 1 {
+		mid := (right + left) / 2
+
+		cnt := 1
+		prevIdx := 0
+		for i := range n {
+			if a[i]-a[prevIdx] >= mid {
+				cnt++
+				prevIdx = i
+			}
+		}
+
+		if cnt >= m {
+			left = mid
+		} else {
+			right = mid
+		}
+	}
+	return left
 }

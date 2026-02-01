@@ -65,3 +65,52 @@ func Test_Sunke(t *testing.T) {
 		})
 	}
 }
+
+func Test_Darts(t *testing.T) {
+	type testCase struct {
+		name string
+		N, M int
+		a    []int
+		want int
+	}
+
+	testCases := []testCase{
+		{
+			name: "aの要素から重複ありで4つ選び、Mを超えない最大値を返す",
+			N:    4,
+			M:    50,
+			a:    []int{3, 14, 15, 9},
+			want: 48,
+		},
+		{
+			name: "aの要素から重複ありで4つ選び、Mを超えない最大値を返す",
+			N:    3,
+			M:    21,
+			a:    []int{16, 11, 2},
+			want: 20,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			act := Darts(tc.N, tc.M, tc.a)
+			if act != tc.want {
+				t.Errorf("want: %d, act: %d", tc.want, act)
+			}
+		})
+	}
+}
+
+func Test_AggressiveCows(t *testing.T) {
+	t.Run("M個選んだ要素の内、2つの距離の最小値の最大値", func(t *testing.T) {
+		n := 5
+		m := 3
+		a := []int{1, 2, 8, 4, 9}
+		want := 3
+
+		act := AggressiveCows(n, m, a)
+		if act != want {
+			t.Errorf("want: %d, act: %d", want, act)
+		}
+	})
+}
