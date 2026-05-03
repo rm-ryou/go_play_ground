@@ -20,10 +20,22 @@ func Index(s, substr string) int {
 		return -1
 	}
 
-	for i := 0; i+n <= len(s); i++ {
+	c0 := substr[0]
+	t := len(s) - n + 1
+	for i := 0; i < t; {
+		if s[i] != c0 {
+			o := IndexByte(s[i+1:t], c0)
+			if o < 0 {
+				return -1
+			}
+			i += o + 1
+		}
+
 		if s[i:i+n] == substr {
 			return i
 		}
+
+		i++
 	}
 	return -1
 }
