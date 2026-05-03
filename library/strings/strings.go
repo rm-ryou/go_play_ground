@@ -1,7 +1,7 @@
 package strings
 
 func IndexByte(s string, c byte) int {
-	for i := range s {
+	for i := range len(s) {
 		if s[i] == c {
 			return i
 		}
@@ -20,11 +20,7 @@ func Index(s, substr string) int {
 		return -1
 	}
 
-	for i := range s {
-		if i+n > len(s) {
-			return -1
-		}
-
+	for i := 0; i+n <= len(s); i++ {
 		if s[i:i+n] == substr {
 			return i
 		}
