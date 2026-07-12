@@ -8,6 +8,7 @@ package sync
 
 import (
 	"runtime"
+	stdSync "sync"
 	"testing"
 	"time"
 )
@@ -120,6 +121,20 @@ func TestMutexFairness(t *testing.T) {
 	}
 }
 
+func BenchmarkStdMutexUncontended(b *testing.B) {
+	type PaddedMutex struct {
+		stdSync.Mutex
+		pad [128]uint8
+	}
+	b.RunParallel(func(pb *testing.PB) {
+		var mu PaddedMutex
+		for pb.Next() {
+			mu.Lock()
+			mu.Unlock()
+		}
+	})
+}
+
 func BenchmarkMutexUncontended(b *testing.B) {
 	type PaddedMutex struct {
 		Mutex
@@ -131,6 +146,27 @@ func BenchmarkMutexUncontended(b *testing.B) {
 			mu.Lock()
 			mu.Unlock()
 		}
+	})
+}
+
+func benchmarkStdMutex(b *testing.B, slack, work bool) {
+	var mu stdSync.Mutex
+	if slack {
+		b.SetParallelism(10)
+	}
+	b.RunParallel(func(pb *testing.PB) {
+		foo := 0
+		for pb.Next() {
+			mu.Lock()
+			mu.Unlock()
+			if work {
+				for i := 0; i < 100; i++ {
+					foo *= 2
+					foo /= 2
+				}
+			}
+		}
+		_ = foo
 	})
 }
 
@@ -155,20 +191,64 @@ func benchmarkMutex(b *testing.B, slack, work bool) {
 	})
 }
 
+func BenchmarkStdMutex(b *testing.B) {
+	benchmarkStdMutex(b, false, false)
+}
+
 func BenchmarkMutex(b *testing.B) {
 	benchmarkMutex(b, false, false)
+}
+
+func BenchmarkStdMutexSlack(b *testing.B) {
+	benchmarkStdMutex(b, true, false)
 }
 
 func BenchmarkMutexSlack(b *testing.B) {
 	benchmarkMutex(b, true, false)
 }
 
+func BenchmarkStdMutexWork(b *testing.B) {
+	benchmarkStdMutex(b, false, true)
+}
+
 func BenchmarkMutexWork(b *testing.B) {
 	benchmarkMutex(b, false, true)
 }
 
+func BenchmarkStdMutexWorkSlack(b *testing.B) {
+	benchmarkStdMutex(b, true, true)
+}
+
 func BenchmarkMutexWorkSlack(b *testing.B) {
 	benchmarkMutex(b, true, true)
+}
+
+func BenchmarkStdMutexNoSpin(b *testing.B) {
+	var m stdSync.Mutex
+	var acc0, acc1 uint64
+	b.SetParallelism(4)
+	b.RunParallel(func(pb *testing.PB) {
+		c := make(chan bool)
+		var data [4 << 10]uint64
+		for i := 0; pb.Next(); i++ {
+			if i%4 == 0 {
+				m.Lock()
+				acc0 -= 100
+				acc1 += 100
+				m.Unlock()
+			} else {
+				for i := 0; i < len(data); i += 4 {
+					data[i]++
+				}
+				// Elaborate way to say runtime.Gosched
+				// that does not put the goroutine onto global runq.
+				go func() {
+					c <- true
+				}()
+				<-c
+			}
+		}
+	})
 }
 
 func BenchmarkMutexNoSpin(b *testing.B) {
@@ -200,6 +280,23 @@ func BenchmarkMutexNoSpin(b *testing.B) {
 					c <- true
 				}()
 				<-c
+			}
+		}
+	})
+}
+
+func BenchmarkStdMutexSpin(b *testing.B) {
+	var m stdSync.Mutex
+	var acc0, acc1 uint64
+	b.RunParallel(func(pb *testing.PB) {
+		var data [16 << 10]uint64
+		for i := 0; pb.Next(); i++ {
+			m.Lock()
+			acc0 -= 100
+			acc1 += 100
+			m.Unlock()
+			for i := 0; i < len(data); i += 4 {
+				data[i]++
 			}
 		}
 	})
