@@ -1,10 +1,14 @@
 package sync
 
-import isync "sync"
+import (
+	"runtime"
+	"sync/atomic"
+)
+
+const mutexLocked int32 = 1 << iota
 
 type Mutex struct {
-	once isync.Once
-	ch   chan struct{}
+	state int32
 }
 
 type Locker interface {
@@ -12,33 +16,25 @@ type Locker interface {
 	Unlock()
 }
 
-func (m *Mutex) init() {
-	m.once.Do(func() {
-		m.ch = make(chan struct{}, 1)
-		m.ch <- struct{}{}
-	})
-}
-
 func (m *Mutex) Lock() {
-	m.init()
-	<-m.ch
+	if atomic.CompareAndSwapInt32(&m.state, 0, mutexLocked) {
+		return
+	}
+	m.lockSlow()
 }
 
-func (m *Mutex) TryLock() bool {
-	m.init()
-	select {
-	case <-m.ch:
-		return true
-	default:
-		return false
+func (m *Mutex) lockSlow() {
+	for !atomic.CompareAndSwapInt32(&m.state, 0, mutexLocked) {
+		runtime.Gosched()
 	}
 }
 
+func (m *Mutex) TryLock() bool {
+	return atomic.CompareAndSwapInt32(&m.state, 0, mutexLocked)
+}
+
 func (m *Mutex) Unlock() {
-	m.init()
-	select {
-	case m.ch <- struct{}{}:
-	default:
+	if atomic.AddInt32(&m.state, -mutexLocked) != 0 {
 		panic("sync: unlock of unlocked mutex")
 	}
 }
